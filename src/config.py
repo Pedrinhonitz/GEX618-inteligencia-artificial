@@ -1,21 +1,37 @@
 class Config:
+    # # Reward configs
+    # STEP_REWARD = 0
+    # WALL_REWARD = 0
+    # HOLE_REWARD = 0
+    # GOAL_REWARD = 0
+
+    # # Q-Learning configs
+    # ALPHA = 0
+    # GAMMA = 0
+    # EPSILON = 0
+    # SIMMULATION_NUMBER = 0
+    # ALPHA_DECAY = 0
+    # EPSILON_DECAY = 0
+    # DECAY_STEP = 0
+
     # Reward configs
-    STEP_REWARD = 0
-    WALL_REWARD = 0
-    HOLE_REWARD = 0
-    GOAL_REWARD = 0
+    STEP_REWARD = -1
+    WALL_REWARD = -5
+    HOLE_REWARD = -10
+    GOAL_REWARD = 100
 
     # Q-Learning configs
-    ALPHA = 0
-    GAMMA = 0
-    EPSILON = 0
-    SIMMULATION_NUMBER = 0
-    ALPHA_DECAY = 0
-    EPSILON_DECAY = 0
-    DECAY_STEP = 0
+    ALPHA = 0.1
+    GAMMA = 0.95
+    EPSILON = 1.0
+    SIMMULATION_NUMBER = 5000
+    ALPHA_DECAY = 0.9995
+    EPSILON_DECAY = 0.9995
+    DECAY_STEP = 100 
+
 
     # Train or Test Model/Agent
-    TRAIN = False
+    TRAIN = True
     RENDERS = True
 
 def STEP_REWARD() -> int:
