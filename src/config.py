@@ -31,7 +31,7 @@ class Config:
 
 
     # Train or Test Model/Agent
-    TRAIN = True
+    TRAIN = False
     RENDERS = True
 
 def STEP_REWARD() -> int:
