@@ -7,5 +7,11 @@ start-env:
 requirements-install:
 	pip3 install -r requirements.txt
 
-run:
+run-rl:
 	python3 src/RL-game.py
+
+run-all-train:
+	python3 src/batch_train.py
+
+run-all-test:
+	python3 src/batch_test.py
