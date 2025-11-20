@@ -1,5 +1,5 @@
-numpy
-pandas
-gymnasium
-matplotlib
-stable_baselines3
+numpy==2.3.5
+pandas==2.3.3
+gymnasium==1.2.2
+matplotlib==3.10.7
+stable_baselines3==2.7.0
