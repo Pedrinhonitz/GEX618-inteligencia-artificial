@@ -8,7 +8,7 @@ requirements-install:
 	pip3 install -r requirements.txt
 
 run-rl:
-	python3 src/RL-game.py
+	python3 src/rl_game.py
 
 run-all-train:
 	python3 src/batch_train.py
