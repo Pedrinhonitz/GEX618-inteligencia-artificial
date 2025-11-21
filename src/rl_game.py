@@ -209,60 +209,65 @@ class QLearningAgent:
         new_value = (1 - self.alpha) * old_value + self.alpha * (reward + self.gamma * next_max)
         self.q_table[state][action] = new_value
 
-# Training Model/Agent
-if TRAIN():
-    env = MazeEnv()
-    agent = QLearningAgent(env.action_space, ALPHA(), GAMMA(), EPSILON())
 
-    episodes = SIMMULATION_NUMBER()
-    total_reward = 0
-    sucess = 0
-    for episode in range(1, episodes+1):
+def run():
+# Training Model/Agent
+    if TRAIN():
+        env = MazeEnv()
+        agent = QLearningAgent(env.action_space, ALPHA(), GAMMA(), EPSILON())
+
+        episodes = SIMMULATION_NUMBER()
+        total_reward = 0
+        sucess = 0
+        for episode in range(1, episodes+1):
+            state, _ = env.reset(isnumpy = False)
+            done = False
+            if RENDERS():
+                env.render()
+
+            while not done:
+                action = agent.get_action(state)
+                next_state, reward, done, _, _ = env.step(action, isnumpy = False)
+
+                agent.update(state, action, reward, next_state)
+                state = next_state
+                total_reward += reward
+                if reward == GOAL_REWARD():
+                    sucess += 1
+                if RENDERS():
+                    env.render()
+
+            # Parameter Decay
+            if episode % DECAY_STEP() == 0:
+                agent.epsilon *= EPSILON_DECAY()
+                agent.alpha *= ALPHA_DECAY()
+                print(f"Episode {episode}, Mean Reward: {(total_reward/DECAY_STEP()):.2f}, Success Rate: {(sucess/DECAY_STEP()):.2f}")
+                print("Explore Chance (epsilon): ", agent.epsilon)
+                print("Exploit Chance (1-epsilon): ", 1-agent.epsilon)
+                print("Learning Rate (alpha): ", agent.alpha)
+                total_reward = 0
+                sucess = 0
+
+        # Save the trained agent
+        agent.save_model('./models/model_parameter_19.pkl')
+
+    # Test the trained agent
+    else:
+        env = MazeEnv()
         state, _ = env.reset(isnumpy = False)
         done = False
         if RENDERS():
             env.render()
+        # Load the trained agent
+        agent = QLearningAgent(env.action_space, ALPHA(), GAMMA(), 0)
+        agent.load_model('./models/model_parameter_19.pkl')
 
         while not done:
             action = agent.get_action(state)
-            next_state, reward, done, _, _ = env.step(action, isnumpy = False)
-
-            agent.update(state, action, reward, next_state)
-            state = next_state
-            total_reward += reward
-            if reward == GOAL_REWARD():
-                sucess += 1
+            state, reward, done, _, _ = env.step(action, isnumpy = False)
+            print(f"Action: {action}, Reward: {reward}")
             if RENDERS():
                 env.render()
-
-        # Parameter Decay
-        if episode % DECAY_STEP() == 0:
-            agent.epsilon *= EPSILON_DECAY()
-            agent.alpha *= ALPHA_DECAY()
-            print(f"Episode {episode}, Mean Reward: {(total_reward/DECAY_STEP()):.2f}, Success Rate: {(sucess/DECAY_STEP()):.2f}")
-            print("Explore Chance (epsilon): ", agent.epsilon)
-            print("Exploit Chance (1-epsilon): ", 1-agent.epsilon)
-            print("Learning Rate (alpha): ", agent.alpha)
-            total_reward = 0
-            sucess = 0
-
-    # Save the trained agent
-    agent.save_model('q_learning_model.pkl')
-
-# Test the trained agent
-else:
-    env = MazeEnv()
-    state, _ = env.reset(isnumpy = False)
-    done = False
-    if RENDERS():
-        env.render()
-    # Load the trained agent
-    agent = QLearningAgent(env.action_space, ALPHA(), GAMMA(), 0)
-    agent.load_model('q_learning_model.pkl')
-
-    while not done:
-        action = agent.get_action(state)
-        state, reward, done, _, _ = env.step(action, isnumpy = False)
-        print(f"Action: {action}, Reward: {reward}")
-        if RENDERS():
-            env.render()
+                
+if __name__ == "__main__":
+    run()

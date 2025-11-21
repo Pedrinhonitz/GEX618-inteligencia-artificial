@@ -2,6 +2,8 @@ import os
 import csv
 import shutil
 from config import Config
+import rl_game as game_module
+import importlib
 
 PARAM_FOLDER = "./seeds"
 
@@ -50,7 +52,9 @@ def run_training(csv_name):
     print("\n🚀 Iniciando treinamento:", csv_name)
     print("==============================================")
 
-    os.system("python3 src/rl_game.py")
+    #Limpa o agente anterior da memória, carrega o modulo e roda
+    importlib.reload(game_module)
+    game_module.run()
 
     if not os.path.exists(RAW_MODEL):
         print(f"❌ ERRO: {RAW_MODEL} não foi encontrado! Treino falhou.")
@@ -60,8 +64,7 @@ def run_training(csv_name):
     new_model_path = os.path.join(MODEL_FOLDER, new_model_name)
 
     shutil.move(RAW_MODEL, new_model_path)
-
-    print(f"✅ Modelo salvo como {new_model_path}\n")
+    print(f"✅ Sucesso! Salvo em: {new_model_path}\n")
 
 
 if __name__ == "__main__":
